@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.zzg.test.StudentMapper">
+
+    <resultMap id="queryStudentMapping" type="Student">
+        <result column="id" property="id"></result>
+        <result column="name" property="name"></result>
+        <result column="address" property="address"></result>
+        <result column="age" property="age"></result>
+        <association property="grade" javaType="Grade">
+            <result column="gid" property="id"></result>
+            <result column="gname" property="gname"></result>
+        </association>
+        <collection property="telephone" ofType="Telephone">
+            <result    column="tid"         property="id"></result>
+            <result    column="phone"       property="phone"></result>
+        </collection>
+
+    </resultMap>
+    <select id="queryStudent" resultMap="queryStudentMapping">
+        select s.id,
+               s.name,
+               s.age,
+               s.address,
+               g.id gid,
+               g.gname,
+               t.phone
+        from student s
+                 inner join grade g on s.gid = g.id
+                 inner join telephone t on t.sid=s.id
+
+    </select>
+</mapper>
